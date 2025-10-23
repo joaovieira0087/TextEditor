@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.IO;
 
 
 namespace TextEditor
@@ -8,35 +9,62 @@ namespace TextEditor
     {
         static void Main(string[] args)
         {
-
+            Menu();
         }
         
         static void Menu()
         {
-            Console.WriteLine("Text Editor Menu:");
-            Console.WriteLine("1. Open Document");
-            Console.WriteLine("2. Create New Document");
-            Console.WriteLine("0. Exit");
-            Console.Write("Select an option: ");
+            Console.WriteLine("O que você deseja fazer?");
+            Console.WriteLine("1. Abrir Documento");
+            Console.WriteLine("2. Criar Novo Documento");
+            Console.WriteLine("0. Sair");
+            Console.Write("selecione uma opção: ");
             short option = short.Parse(Console.ReadLine());
 
             switch (option)
             {
                 case 0: Environment.Exit(0); break;
-                case 1: OpenDocument(); break;
-                case 2: CreateNewDocument(); break;
+                case 1: Abrir(); break;
+                case 2: Editar(); break;
 
                 default: Menu(); break;
             }
 
-            static void OpenDocument()
+            static void Abrir()
             {
 
             }
             
-            static void CreateNewDocument()
+            static void Editar()
             {
+                Console.Clear();
+                Console.WriteLine("Digite seu texto abaixo (ESC para sair):");
+                Console.WriteLine("----------------------");
+                string Text = "";
 
+                do
+                {
+                    Text = Text + Console.ReadLine();
+                    Text = Text + Environment.NewLine;
+                }
+                while (Console.ReadKey().Key != ConsoleKey.Escape);
+
+                Console.Write(Text);
+
+                Salvar(Text);
+
+            }
+            
+            static void Salvar(string text)
+            {
+                Console.Clear();
+                Console.WriteLine("Qual caminho para salvar o arquivo?");
+                var path = Console.ReadLine();
+
+                using (var file = new StreamWriter(path))
+                {
+                    file.Write(text);
+                }
             }
         }
     }
